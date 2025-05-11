@@ -15,7 +15,9 @@ const config: StorybookConfig = {
   },
   docs: {
     autodocs: 'tag'
-  }
+  },
+  // Handle GitHub Pages subfolder
+  staticDirs: ['../public']
 };
 
 export default config;

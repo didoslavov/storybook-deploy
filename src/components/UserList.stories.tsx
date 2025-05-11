@@ -2,6 +2,13 @@ import type { Meta, StoryObj } from '@storybook/react';
 import UserList from './UserList';
 import { http, HttpResponse } from 'msw';
 
+// Define the mock data for users
+const mockUsers = [
+  { id: 1, name: 'John Doe', email: 'john@example.com' },
+  { id: 2, name: 'Jane Smith', email: 'jane@example.com' },
+  { id: 3, name: 'Bob Johnson', email: 'bob@example.com' }
+];
+
 const meta = {
   title: 'Components/UserList',
   component: UserList,
@@ -10,11 +17,12 @@ const meta = {
     msw: {
       handlers: [
         http.get('/api/users', () => {
-          return HttpResponse.json([
-            { id: 1, name: 'John Doe', email: 'john@example.com' },
-            { id: 2, name: 'Jane Smith', email: 'jane@example.com' },
-            { id: 3, name: 'Bob Johnson', email: 'bob@example.com' }
-          ]);
+          return new HttpResponse(JSON.stringify(mockUsers), {
+            status: 200,
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
         })
       ]
     }
@@ -25,8 +33,7 @@ const meta = {
         <Story />
       </div>
     )
-  ],
-  tags: ['autodocs']
+  ]
 } satisfies Meta<typeof UserList>;
 
 export default meta;
@@ -39,7 +46,12 @@ export const Empty: Story = {
     msw: {
       handlers: [
         http.get('/api/users', () => {
-          return HttpResponse.json([]);
+          return new HttpResponse(JSON.stringify([]), {
+            status: 200,
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
         })
       ]
     }
@@ -51,7 +63,15 @@ export const Error: Story = {
     msw: {
       handlers: [
         http.get('/api/users', () => {
-          return HttpResponse.error();
+          return new HttpResponse(
+            JSON.stringify({ message: 'Error fetching users' }),
+            {
+              status: 500,
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            }
+          );
         })
       ]
     }

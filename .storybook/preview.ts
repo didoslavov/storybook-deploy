@@ -2,16 +2,9 @@ import type { Preview } from '@storybook/react';
 import '../src/styles/globals.css';
 import { initialize, mswLoader } from 'msw-storybook-addon';
 
-// Initialize MSW
+// Initialize MSW with minimal configuration
 initialize({
-  onUnhandledRequest: 'bypass', // Don't warn about unhandled requests
-  serviceWorker: {
-    // Use the base path with repo name in GitHub Pages environment
-    url:
-      typeof window !== 'undefined' && (window as any).STORYBOOK_DEPLOYED
-        ? '/storybook-deploy/mockServiceWorker.js'
-        : '/mockServiceWorker.js'
-  }
+  onUnhandledRequest: 'bypass'
 });
 
 const preview: Preview = {
@@ -23,9 +16,16 @@ const preview: Preview = {
         date: /Date$/
       }
     },
-    // Ensure MSW handles all API requests
+    // Each story should define its own handlers
     msw: {
       handlers: []
+    },
+    // Important: Reset handlers between stories
+    docs: {
+      story: {
+        inline: true,
+        iframeHeight: 400
+      }
     }
   },
   loaders: [mswLoader]

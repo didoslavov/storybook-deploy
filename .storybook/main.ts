@@ -1,4 +1,5 @@
 import type { StorybookConfig } from '@storybook/nextjs';
+import path from 'path';
 
 const config: StorybookConfig = {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
@@ -16,8 +17,8 @@ const config: StorybookConfig = {
   docs: {
     autodocs: 'tag'
   },
-  // Use a conditional check to ensure the directory exists
-  staticDirs: []
+  // Ensure the public directory with MSW service worker is served
+  staticDirs: ['../public']
 };
 
 export default config;

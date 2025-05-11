@@ -19,6 +19,13 @@ const meta = {
       ]
     }
   },
+  decorators: [
+    (Story) => (
+      <div style={{ width: '100%', maxWidth: '600px' }}>
+        <Story />
+      </div>
+    )
+  ],
   tags: ['autodocs']
 } satisfies Meta<typeof UserList>;
 

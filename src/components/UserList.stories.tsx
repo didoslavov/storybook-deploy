@@ -17,12 +17,7 @@ const meta = {
     msw: {
       handlers: [
         http.get('/api/users', () => {
-          return new HttpResponse(JSON.stringify(mockUsers), {
-            status: 200,
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          });
+          return HttpResponse.json(mockUsers, { status: 200 });
         })
       ]
     }
@@ -46,12 +41,7 @@ export const Empty: Story = {
     msw: {
       handlers: [
         http.get('/api/users', () => {
-          return new HttpResponse(JSON.stringify([]), {
-            status: 200,
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          });
+          return HttpResponse.json([], { status: 200 });
         })
       ]
     }
@@ -63,14 +53,9 @@ export const Error: Story = {
     msw: {
       handlers: [
         http.get('/api/users', () => {
-          return new HttpResponse(
-            JSON.stringify({ message: 'Error fetching users' }),
-            {
-              status: 500,
-              headers: {
-                'Content-Type': 'application/json'
-              }
-            }
+          return HttpResponse.json(
+            { message: 'Error fetching users' },
+            { status: 500 }
           );
         })
       ]

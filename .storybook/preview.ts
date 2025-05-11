@@ -1,15 +1,23 @@
 import type { Preview } from '@storybook/react';
 import '../src/styles/globals.css';
 import { initialize, mswLoader } from 'msw-storybook-addon';
+import { storybookHandlers } from '../src/mocks/storybook-mocks';
 
+// Determine if we're on GitHub Pages
+const isGitHubPages =
+  typeof window !== 'undefined' &&
+  window.location.hostname.includes('github.io');
+
+// Initialize MSW
 initialize({
-  onUnhandledRequest: 'bypass'
+  onUnhandledRequest: 'bypass',
+  serviceWorker: {
+    // When on GitHub Pages, use absolute path to repository
+    url: isGitHubPages
+      ? '/storybook-deploy/mockServiceWorker.js'
+      : '/mockServiceWorker.js'
+  }
 });
-
-const isGithubPages = location.hostname.endsWith('github.io');
-const serviceWorkerUrl = isGithubPages
-  ? '/mockServiceWorker.js'
-  : '/mockServiceWorker.js';
 
 const preview: Preview = {
   parameters: {
@@ -21,10 +29,7 @@ const preview: Preview = {
       }
     },
     msw: {
-      handlers: [],
-      serviceWorker: {
-        url: serviceWorkerUrl
-      }
+      handlers: storybookHandlers
     },
     docs: {
       story: {

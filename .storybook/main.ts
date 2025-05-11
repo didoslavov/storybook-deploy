@@ -16,8 +16,8 @@ const config: StorybookConfig = {
   docs: {
     autodocs: 'tag'
   },
-  // Handle GitHub Pages subfolder
-  staticDirs: ['../public']
+  // Use a conditional check to ensure the directory exists
+  staticDirs: []
 };
 
 export default config;

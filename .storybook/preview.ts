@@ -6,8 +6,9 @@ import { initialize, mswLoader } from 'msw-storybook-addon';
 initialize({
   onUnhandledRequest: 'bypass', // Don't warn about unhandled requests
   serviceWorker: {
+    // Use the base path with repo name in GitHub Pages environment
     url:
-      process.env.NODE_ENV === 'production'
+      typeof window !== 'undefined' && (window as any).STORYBOOK_DEPLOYED
         ? '/storybook-deploy/mockServiceWorker.js'
         : '/mockServiceWorker.js'
   }
@@ -21,6 +22,10 @@ const preview: Preview = {
         color: /(background|color)$/i,
         date: /Date$/
       }
+    },
+    // Ensure MSW handles all API requests
+    msw: {
+      handlers: []
     }
   },
   loaders: [mswLoader]
